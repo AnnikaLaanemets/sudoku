@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import './App.css';
 import { generatePuzzle } from './utils/sudokuUtils.ts';
 import { CellComponent } from './components/Cell.tsx';
+import NumberButtons from "./components/NumberButtons.tsx";
 import Button from "./components/Button";
 import Navbar from "./components/Navbar";
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState({x:0,y:0})
+  const [selectedButton, setSelectedButton] = useState<number | null>(null);
   const [board, setBoard] = useState(() => generatePuzzle({ difficulty: 'easy' }));
+  const [counts, setCounts] = useState(0)
   const isSolved = board.every(cell => cell.isRevealed || cell.inputValue === cell.number)
   const selectedCell = board.find(cell => cell.x===selected.x && cell.y === selected.y)
 
-  console.log("Solved Board:", {board});
   const handleCheckNumber = () => {
     if(!selectedCell){
       return
@@ -32,6 +34,7 @@ const App: React.FC = () => {
   };
 
   const handleShowHint = () => {
+    setCounts(counts + 1)
   const available = board.filter(cell => !cell.isRevealed && cell.inputValue === undefined)
   const chosen = available[Math.floor(Math.random() * available.length)]
   const newBoard = board.map(item=> {
@@ -53,7 +56,7 @@ const App: React.FC = () => {
     const isCorrect = board.every((cell) =>
        cell.isRevealed === true || cell.number === cell.inputValue
     );
-    alert(isCorrect ? "Congratulations! You solved it!" : "Some numbers are incorrect.");
+    alert(isCorrect ? "Congratulations! You solved the sudoku!" : "Some numbers are incorrect.");
   };
 
   const handleShowSolution = () => {
@@ -85,35 +88,42 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <div className="container m-auto rounded-sm">
-        <Navbar difficulty="easy" hints={3} />
-        <div className='grid grid-cols-9 gap-1'>
+      <div className="container m-auto rounded-lg border-5">
+        <Navbar difficulty="easy" hints={counts} />
+        <div className="bg-violet-500/80 grid grid-cols-1 sm:grid-cols-3 rounded">
+        <div className=" col-span-1 sm:col-span-2  rounded">
+        <div className='grid grid-cols-9 border border-gray-800 m-2'>
           {board.map(cell =>
               <CellComponent
+             
               handler={handleCellChange}
               handleFocus={handleFocus}
-              isSelected={!cell.isRevealed} key={`${cell.x}+${cell.y}`} cellData={cell}/>
+              isSelected={!cell.isRevealed} key={`${cell.x}+${cell.y}`} 
+              cellData={cell} 
+              selectedButton={selectedButton} />
           )}
         </div>
-        <div className="buttonContainer justify-center mt-4">
-          <Button onClick={handleCheckNumber} className="m-2" variant="small">
+        <div className="buttonContainer justify-center m-3">
+        <NumberButtons setSelectedButton={setSelectedButton} /></div> </div>
+        <div className="bg-sky-200/80 rounded flex flex-col justify-center ms-2">
+          <Button onClick={handleCheckNumber} variant="helpButton">
             Check Number
           </Button>
-          <Button onClick={handleShowHint} className="m-2" variant="small">
+          <Button onClick={handleShowHint} variant="helpButton">
             Show Hint
           </Button>
-          <Button onClick={handleValidate} disabled={isSolved} className="m-2" variant="small">
+          <Button onClick={handleValidate} disabled={isSolved} variant="helpButton">
             Validate Solution
           </Button>
-          <Button onClick={handleShowSolution} disabled={isSolved} className="m-2" variant="big">
+          <Button onClick={handleShowSolution} disabled={isSolved} variant="regularButton">
             Show Solution
           </Button>
-          <Button onClick={handleNewGame} className="m-2" variant="big">
+          <Button onClick={handleNewGame} variant="regularButton">
             New Game
           </Button>
+          </div></div>
         </div>
       </div>
-    </div>
   );
 };
 

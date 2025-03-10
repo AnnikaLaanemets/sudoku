@@ -4,6 +4,7 @@ type Cell = {
   number: number | null | string;
   inputValue?: number;
   isRevealed: boolean;
+  selectedButton?: number | null;
 };
 type Board = Cell[][];
 
