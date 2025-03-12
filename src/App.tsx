@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
-import './App.css';
-import { generatePuzzle } from './utils/sudokuUtils.ts';
-import { CellComponent } from './components/Cell.tsx';
+import React, { useState } from "react";
+import "./App.css";
+import { generatePuzzle } from "./utils/sudokuUtils.ts";
+import { CellComponent } from "./components/Cell.tsx";
 import NumberButtons from "./components/NumberButtons.tsx";
 import Button from "./components/Button";
 import Navbar from "./components/Navbar";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 
 const App: React.FC = () => {
-  const [selected, setSelected] = useState({x:0,y:0})
+  const [selected, setSelected] = useState({ x: 0, y: 0 });
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
-  const [board, setBoard] = useState(() => generatePuzzle({ difficulty: 'easy' }));
-  const [counts, setCounts] = useState(0)
-  const isSolved = board.every(cell => cell.isRevealed || cell.inputValue === cell.number)
-  const selectedCell = board.find(cell => cell.x===selected.x && cell.y === selected.y)
+  const [board, setBoard] = useState(() => generatePuzzle({ difficulty: "easy" }));
+  const [counts, setCounts] = useState(0);
+  const isSolved = board.every((cell) => cell.isRevealed || cell.inputValue === cell.number);
+  const selectedCell = board.find((cell) => cell.x === selected.x && cell.y === selected.y);
+  
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) {
+      return;
+    }
+    const draggedNumber = active.data.current?.value;
+    const targetCell = over.data.current?.cell;
+    setSelected(targetCell)
 
+    if (draggedNumber !== undefined && targetCell) {
+      const { x, y } = targetCell;
+
+      handleCellChange(draggedNumber, x, y);
+    }
+  };
+  
   const handleCheckNumber = () => {
     if(!selectedCell){
       return
@@ -32,6 +49,7 @@ const App: React.FC = () => {
     }
     
   };
+
 
   const handleShowHint = () => {
     setCounts(counts + 1)
@@ -53,58 +71,57 @@ const App: React.FC = () => {
   };
 
   const handleValidate = () => {
-    const isCorrect = board.every((cell) =>
-       cell.isRevealed === true || cell.number === cell.inputValue
-    );
+    const isCorrect = board.every((cell) => cell.isRevealed || cell.number === cell.inputValue);
     alert(isCorrect ? "Congratulations! You solved the sudoku!" : "Some numbers are incorrect.");
   };
 
   const handleShowSolution = () => {
-      const solved =board.map(item => {
-        return {
-          ...item,
-          isRevealed:true
-        }
-      })
-      setBoard(solved)
-  }
+    const solved =board.map(item => {
+      return {
+        ...item,
+        isRevealed:true
+      }
+    })
+    setBoard(solved)
+}
 
+const handleNewGame = () => {
+  const newPuzzle = generatePuzzle({ difficulty: 'easy' });
+  setBoard(newPuzzle);
+};
 
-  const handleNewGame = () => {
-    const newPuzzle = generatePuzzle({ difficulty: 'easy' });
-    setBoard(newPuzzle);
-  };
+const handleCellChange = (value:number,x:number,y:number) => {
+  const index = board.findIndex(item => item.x===x && item.y === y)
+  board[index].inputValue = value
+  setBoard([...board])
+}
 
-  const handleCellChange = (value:number,x:number,y:number) => {
-    const index = board.findIndex(item => item.x===x && item.y === y)
-    board[index].inputValue = value
-    setBoard([...board])
-  }
- 
-  const handleFocus = (x:number,y:number) => {
-      setSelected({x,y})
-  }
- 
+const handleFocus = (x:number,y:number) => {
+    setSelected({x,y})
+}
 
   return (
     <div className="App">
       <div className="container m-auto rounded-lg border-5">
         <Navbar difficulty="easy" hints={counts} />
         <div className="bg-violet-500/80 grid grid-cols-1 sm:grid-cols-3 rounded">
-        <div className=" col-span-1 sm:col-span-2  rounded">
-        <div className='grid grid-cols-9 border border-gray-800 m-2'>
-          {board.map(cell =>
+        <div className="col-span-1 sm:col-span-2  rounded">
+        <DndContext onDragEnd={handleDragEnd}>
+              <div className="grid grid-cols-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)] grid-rows-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)">
+              {board.map(cell =>
               <CellComponent
-             
               handler={handleCellChange}
               handleFocus={handleFocus}
               isSelected={!cell.isRevealed} key={`${cell.x}+${cell.y}`} 
               cellData={cell} 
               selectedButton={selectedButton} />
           )}
-        </div>
-        <div className="buttonContainer justify-center m-3">
-        <NumberButtons setSelectedButton={setSelectedButton} /></div> </div>
+              </div>
+              <div className="buttonContainer justify-center m-3">
+                <NumberButtons setSelectedButton={setSelectedButton} />
+              </div>
+            </DndContext>
+</div>
         <div className="bg-sky-200/80 rounded flex flex-col justify-center ms-2">
           <Button onClick={handleCheckNumber} variant="helpButton">
             Check Number
@@ -121,10 +138,14 @@ const App: React.FC = () => {
           <Button onClick={handleNewGame} variant="regularButton">
             New Game
           </Button>
-          </div></div>
+        </div>
         </div>
       </div>
+    </div>
   );
 };
+
+
+
 
 export default App;
