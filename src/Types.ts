@@ -8,6 +8,6 @@ type Cell = {
 };
 type Board = Cell[][];
 
-type Difficulty =  'easy' | 'moderate' | 'intermediate' | 'difficult';
+type Difficulty = 'easy' | 'moderate' | 'intermediate' | 'difficult'
 
 export type {Board, Cell, Difficulty};

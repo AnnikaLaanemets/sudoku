@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-interface TimerProps {
+type TimerProps = {
   isTimerRunning: boolean;
 }
 

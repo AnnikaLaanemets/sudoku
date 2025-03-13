@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Timer from '../utils/Timer.tsx';
 import play from '/play.png';
 import pause from '/pause.png';
@@ -7,14 +7,14 @@ import { Difficulty } from '../Types.ts';
 type Props = {
   difficulty: Difficulty
   hints: number
+  isTimerRunning: boolean
+  setIsTimerRunning: (isTimerRunning: boolean) => void;
 }
-const Navbar: React.FC<Props>= ({difficulty, hints}) => {
-
-  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
-
+const Navbar: React.FC<Props>= ({difficulty, hints, isTimerRunning, setIsTimerRunning}) => {
 
   const toggleTimer = () => {
-    setIsTimerRunning(prevState => !prevState);
+    setIsTimerRunning(isTimerRunning ? false : true);
+  
   };
 
   return (

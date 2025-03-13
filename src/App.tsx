@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import "./App.css";
+import ChooseDifficulty from "./components/ChooseDifficulty.tsx"
+import StartModal from "./components/StartModal.tsx";
 import { generatePuzzle } from "./utils/sudokuUtils.ts";
 import { CellComponent } from "./components/Cell.tsx";
 import NumberButtons from "./components/NumberButtons.tsx";
 import Button from "./components/Button";
 import Navbar from "./components/Navbar";
+import {Difficulty} from "./Types.ts"
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState({ x: 0, y: 0 });
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
-  const [board, setBoard] = useState(() => generatePuzzle({ difficulty: "easy" }));
+  const [difficulty, setDifficulty] = useState<'easy' | 'moderate' | 'intermediate' | 'difficult'>("easy");
+  const [board, setBoard] = useState(() => generatePuzzle(difficulty));
   const [counts, setCounts] = useState(0);
+  const [isChooseDifficultyOpen, setIsChooseDifficultyOpen] = useState(true);
+  const [isStartModalOpen, setIsStartModalOpen] = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const isSolved = board.every((cell) => cell.isRevealed || cell.inputValue === cell.number);
   const selectedCell = board.find((cell) => cell.x === selected.x && cell.y === selected.y);
-  
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) {
@@ -43,9 +50,9 @@ const App: React.FC = () => {
     }
 
     if (isValid) {
-      alert("Correct number");
+      alert("Correct number! 🙂");
     } else {
-      alert("This number is incorrect");
+      alert("This number is incorrect! 🙁");
     }
     
   };
@@ -72,7 +79,7 @@ const App: React.FC = () => {
 
   const handleValidate = () => {
     const isCorrect = board.every((cell) => cell.isRevealed || cell.number === cell.inputValue);
-    alert(isCorrect ? "Congratulations! You solved the sudoku!" : "Some numbers are incorrect.");
+    alert(isCorrect ? "Congratulations! You solved the sudoku! 🥳🥳🥳" : "Some numbers are incorrect 😞");
   };
 
   const handleShowSolution = () => {
@@ -85,10 +92,19 @@ const App: React.FC = () => {
     setBoard(solved)
 }
 
-const handleNewGame = () => {
-  const newPuzzle = generatePuzzle({ difficulty: 'easy' });
+const handleNewGame = (difficulty: Difficulty) => {
+  setIsChooseDifficultyOpen(true);
+  setIsStartModalOpen(true)
+  setIsTimerRunning(true)
+  //restart timer from 0
+  const newPuzzle = generatePuzzle({difficulty});
   setBoard(newPuzzle);
 };
+
+const handleDifficultyClose = () => {
+  setIsChooseDifficultyOpen(false);
+};
+
 
 const handleCellChange = (value:number,x:number,y:number) => {
   const index = board.findIndex(item => item.x===x && item.y === y)
@@ -102,9 +118,23 @@ const handleFocus = (x:number,y:number) => {
 
   return (
     <div className="App">
-      <div className="container m-auto rounded-lg border-5">
-        <Navbar difficulty="easy" hints={counts} />
-        <div className="bg-violet-500/80 grid grid-cols-1 sm:grid-cols-3 rounded">
+  {isChooseDifficultyOpen && (
+        <ChooseDifficulty
+          setDifficulty={setDifficulty}
+          handleNewGame={handleNewGame}
+          isChooseDifficultyOpen={isChooseDifficultyOpen}
+          onClose={handleDifficultyClose}
+        />
+      )}
+  
+  {isStartModalOpen && !isTimerRunning && (
+    <StartModal
+        setIsStartModalOpen={setIsStartModalOpen}
+    />
+)}
+      <div className="container m-auto rounded-lg border-3 bg-sky-200/80">
+        <Navbar difficulty={difficulty} hints={counts} isTimerRunning={isTimerRunning} setIsTimerRunning={setIsTimerRunning} />
+        <div className=" grid grid-cols-1 sm:grid-cols-3 rounded">
         <div className="col-span-1 sm:col-span-2  rounded">
         <DndContext onDragEnd={handleDragEnd}>
               <div className="grid grid-cols-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)] grid-rows-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)">
@@ -122,7 +152,7 @@ const handleFocus = (x:number,y:number) => {
               </div>
             </DndContext>
 </div>
-        <div className="bg-sky-200/80 rounded flex flex-col justify-center ms-2">
+        <div className=" rounded flex flex-col justify-center ms-2">
           <Button onClick={handleCheckNumber} variant="helpButton">
             Check Number
           </Button>
@@ -135,7 +165,7 @@ const handleFocus = (x:number,y:number) => {
           <Button onClick={handleShowSolution} disabled={isSolved} variant="regularButton">
             Show Solution
           </Button>
-          <Button onClick={handleNewGame} variant="regularButton">
+          <Button  onClick={() => handleNewGame(difficulty)}  variant="regularButton">
             New Game
           </Button>
         </div>

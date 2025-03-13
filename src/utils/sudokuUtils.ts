@@ -15,7 +15,7 @@ const generateEmptyBoard = (): Board =>
     }))
   );
 
-export const isValid = (board: Board, row: number, col: number, num: number): boolean => {
+const isValid = (board: Board, row: number, col: number, num: number): boolean => {
   for (let i = 0; i < 9; i++) {
     if (board[row][i].number === num || board[i][col].number === num) return false;
   }
@@ -63,12 +63,11 @@ const removeCells = (puzzleBoard: Board, difficulty: Difficulty) => {
 };
 
 
-const generatePuzzle = ({difficulty}: {difficulty:Difficulty}) => {
-      const newBoard = generateEmptyBoard();
-      backtrack(newBoard);
-      removeCells( newBoard, difficulty);
+const generatePuzzle = ({difficulty}: {difficulty: Difficulty}) => {
+    const newBoard = generateEmptyBoard();
+    backtrack(newBoard);
+    removeCells(newBoard, difficulty);
+    return newBoard.flat();
   
-  return newBoard.flat()
-}
-
+};
 export {generatePuzzle}
