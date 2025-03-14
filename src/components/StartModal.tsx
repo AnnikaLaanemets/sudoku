@@ -1,5 +1,5 @@
-import React from "react";
-import Button from "./Button.tsx";
+import React from 'react';
+import Button from './Button.tsx';
 
 type StartModalProps = {
   setIsStartModalOpen: (isStartModalOpen: boolean) => void;
@@ -14,9 +14,10 @@ const StartModal = ({
   };
 
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-500">
-        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-            <Button variant="regularButton" onClick={handleClick}>
+      <div className='fixed inset-0 flex items-center justify-center bg-black-900/90'>
+        <div className='bg-cyan-400 p-12 rounded-lg shadow-lg'>
+          <h2>Paused</h2>
+            <Button variant='regularButton' onClick={handleClick}>
               Start
             </Button>
           </div>
@@ -24,8 +25,6 @@ const StartModal = ({
       </div>
     );
   
-
-  return null; 
 };
 
 export default StartModal;

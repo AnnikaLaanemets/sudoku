@@ -1,15 +1,15 @@
 
-import { Board,  Difficulty } from "../Types";
+import { Board,  Difficulty} from '../Types';
 
 
 //Creates empty board array of objects sized 9*9 cells. 
-// Each cell is a object with properties position 0-80, number, inputValue, isEmpty.
-
 const generateEmptyBoard = (): Board =>
   Array.from({ length: 9 }, (_, x) =>
     Array.from({ length: 9 }, (_, y) => ({
       y:y+1,
       x:x+1,
+      zoneX: Math.ceil((x+1)/3),
+      zoneY: Math.ceil((y+1)/3),
       number: 0,
       isRevealed: true,
     }))

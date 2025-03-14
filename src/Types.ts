@@ -1,6 +1,8 @@
 type Cell = {
   x: number;
   y: number;
+  zoneX: number;
+  zoneY: number;
   number: number | null | string;
   inputValue?: number;
   isRevealed: boolean;

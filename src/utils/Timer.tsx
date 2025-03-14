@@ -2,28 +2,28 @@ import React, { useState, useEffect } from 'react';
 
 type TimerProps = {
   isTimerRunning: boolean;
+  difficultyChange?: boolean
 }
 
-const Timer: React.FC<TimerProps> = ({ isTimerRunning }) => {
+const Timer: React.FC<TimerProps> = ({ isTimerRunning, difficultyChange}) => {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    let timer: number | undefined;
+    setSeconds(0);
+  }, [difficultyChange]);
 
-    if (isTimerRunning) {
-      timer = window.setInterval(() => {
-        setSeconds(prevSeconds => prevSeconds + 1);
-      }, 1000);
-    } else {
-      if (timer) window.clearInterval(timer);
-    }
+  useEffect(() => {
+    if (!isTimerRunning) return;
+
+    const timer = window.setInterval(() => {
+      setSeconds(prevSeconds => prevSeconds + 1);
+    }, 1000);
 
     return () => {
-      if (timer) window.clearInterval(timer);
+      window.clearInterval(timer);
     };
-  }, [isTimerRunning]);
+  }, [isTimerRunning]); 
 
- 
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
 
