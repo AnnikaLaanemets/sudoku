@@ -3,12 +3,9 @@
 @plugin "daisyui" ;
 
 body {
+  height: 100vh;
   background: linear-gradient(-20deg, rgb(233, 222, 250) 0%, rgb(251, 252, 219) 100%);
   color: #430f58;
-}
-
-.container {
-  max-width: 700px;
 }
 
 

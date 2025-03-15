@@ -29,8 +29,8 @@ const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSele
     <div
       ref={setNodeRef} 
       onClick={handleClick}
-      className={`w-13 h-13 badge badge-soft ${
-        isSelected ? 'badge-primary' : (isHighlighted ? 'badge-warning': (cellData.isRevealed? 'badge-neutral': 'badge-secondary'))
+      className={`w-8.75 h-9 badge badge-soft ${
+        isSelected ? 'badge-primary' : (isHighlighted ? 'badge-warning': 'badge-neutral')
       } text-2xl rounded-xs !gap-0 !border-violet-950 ${
         cellData.x % 3 === 0 ? 'border-b-4 border-violet-800' : ""
       } ${cellData.y % 3 === 0 ? 'border-r-4 border-violet-800' : ""} `}
@@ -39,7 +39,7 @@ const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSele
         <input
           onChange={onChange}
           onFocus={() => handleFocus?.(cellData.x, cellData.y)}
-          className="w-11 h-11  text-center"
+          className="w-8 h-8 text-center"
           defaultValue={cellData.inputValue || ""}
           maxLength={1}
         />

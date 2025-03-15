@@ -105,7 +105,6 @@ const handleCellChange = (value:number,x:number,y:number) => {
 }
 
 const handleFocus = (x:number,y:number) => {
-  console.log(x, y)
     setSelected({x,y})
 }
 
@@ -123,10 +122,10 @@ const handleFocus = (x:number,y:number) => {
         setIsStartModalOpen={setIsStartModalOpen}
     />
 )}
-      <div className='container m-auto rounded-lg border-3 bg-sky-200/80'>
+      <div className='container w-xs sm:w-xl m-auto rounded-lg border-3 bg-sky-200/80'>
         <Navbar difficulty={difficulty} hints={counts} isTimerRunning={isTimerRunning} setIsTimerRunning={setIsTimerRunning} difficultyChange={isChooseDifficultyOpen} isStartModalOpen={isStartModalOpen} setIsStartModalOpen={setIsStartModalOpen}/>
-        <div className='grid grid-cols-1 sm:grid-cols-3 rounded'>
-        <div className='col-span-1 sm:col-span-2  rounded'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 rounded'>
+        <div className='rounded'>
         <DndContext onDragEnd={handleDragEnd}>
               <div className='grid grid-cols-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)] grid-rows-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)'>
               {board.map(cell =>
@@ -149,13 +148,13 @@ const handleFocus = (x:number,y:number) => {
 
           )}
               </div>
-              <div className='buttonContainer justify-center m-3'>
+              <div className='buttonContainer mt-3'>
                 <NumberButtons setSelectedButton={setSelectedButton} />
               </div>
             </DndContext>
 </div>
-        <div className='rounded flex flex-col justify-center ms-2'>
-          <Button onClick={handleCheckNumber} variant='helpButton'>
+        <div className='rounded flex flex-col m-auto mt-8 ms-15'>
+          <Button onClick={handleCheckNumber} variant='helpButton' >
             Check Number
           </Button>
           <Button onClick={handleShowHint} variant='helpButton'>
@@ -176,8 +175,5 @@ const handleFocus = (x:number,y:number) => {
     </div>
   );
 };
-
-
-
 
 export default App;

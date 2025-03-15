@@ -14,9 +14,9 @@ const StartModal = ({
   };
 
     return (
-      <div className='fixed inset-0 flex items-center justify-center bg-black-900/90'>
-        <div className='bg-cyan-400 p-12 rounded-lg shadow-lg'>
-          <h2>Paused</h2>
+      <div className='fixed inset-0 flex items-center justify-center bg-stone-900/96'>
+        <div className='bg-sky-900 p-45 rounded-lg shadow-lg'>
+          <h2 className="text-center font-bold font-3xl text-white m-8">PAUSED</h2>
             <Button variant='regularButton' onClick={handleClick}>
               Start
             </Button>

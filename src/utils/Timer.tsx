@@ -29,7 +29,7 @@ const Timer: React.FC<TimerProps> = ({ isTimerRunning, difficultyChange}) => {
 
   const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 
-  return <div>{formattedTime}</div>;
+  return <div className="text-base sm:text-lg ">{formattedTime}</div>;
 };
 
 export default Timer;

@@ -20,20 +20,22 @@ const Navbar: React.FC<Props>= ({difficulty, hints, isTimerRunning, setIsTimerRu
     setIsTimerRunning(isTimerRunning ? false : true);
    
   };
+  console.log(isStartModalOpen);
+  console.log(isTimerRunning);
 
   return (
-    <div className='navbar bg-gray-200 shadow-sm rounded-sm'>
+    <div className='navbar bg-blue-200 shadow-sm rounded-sm'>
       <div className='flex-1'>
-        <a className='btn mx-1 btn-ghost text-2xl'>SUDOKU</a>
+        <h1 className='btn btn-ghost sm:text-xl'>SUDOKU</h1>
       </div>
-      <div>{difficulty}</div>
-      <div>Hints used: {hints}</div>
-      <div className='flex-none p-0 m-0'>
-        <button className='btn btn-circle p-1 mx-0.5 btn-ghost' onClick={toggleTimer}>
+      <h3 className="sm:mx-2 capitalize text-xs sm:text-base sm:font-bold">{difficulty}</h3>
+      <div className="text-xs sm:text-base  text-center sm:mx-2">Hints: {hints}</div>
+      <div className='flex-none p-0 sm:mx-2'>
+        <button className='btn btn-circle btn-ghost' onClick={toggleTimer}>
           <div>{isTimerRunning ? <img alt='Pause button' src={pause} /> : <img alt='Start button' src={play} />}</div>
         </button>
 
-        <div className='btn text-base p-1 mx-0.5 btn-ghost'>
+        <div className='btn text-base mx-1 btn-ghost'>
           <Timer isTimerRunning={isTimerRunning} difficultyChange={difficultyChange} />
         </div>
       </div>

@@ -1,8 +1,6 @@
 
 import { Board,  Difficulty} from '../Types';
 
-
-//Creates empty board array of objects sized 9*9 cells. 
 const generateEmptyBoard = (): Board =>
   Array.from({ length: 9 }, (_, x) =>
     Array.from({ length: 9 }, (_, y) => ({

@@ -20,7 +20,7 @@ const NumberButton: React.FC<{ num: number; setSelectedButton: (num: number | nu
         transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
         opacity: isDragging ? 0.5 : 1,
       }}
-      className='w-12 h-12 flex items-center justify-center bg-pink-600 text-white text-2xl font-bold rounded-lg shadow-md cursor-pointer select-none transition-transform active:scale-95'
+      className='w-8 h-8 flex items-center justify-center bg-pink-600 text-white text-2xl font-bold rounded-lg shadow-md cursor-pointer select-none transition-transform active:scale-95'
       onClick={() => setSelectedButton(num)}
     >
       {num === 0 ? '' : num}
