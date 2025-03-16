@@ -1,35 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from "react"
+import { useTimer } from './useTimer'
 
-type TimerProps = {
-  isTimerRunning: boolean;
-  difficultyChange?: boolean
-}
 
-const Timer: React.FC<TimerProps> = ({ isTimerRunning, difficultyChange}) => {
-  const [seconds, setSeconds] = useState(0);
-
-  useEffect(() => {
-    setSeconds(0);
-  }, [difficultyChange]);
-
-  useEffect(() => {
-    if (!isTimerRunning) return;
-
-    const timer = window.setInterval(() => {
-      setSeconds(prevSeconds => prevSeconds + 1);
-    }, 1000);
-
-    return () => {
-      window.clearInterval(timer);
-    };
-  }, [isTimerRunning]); 
-
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-
-  return <div className="text-base sm:text-lg ">{formattedTime}</div>;
+const Timer:React.FC = () => {
+  const { elapsedSeconds } = useTimer()
+  const time = new Date(elapsedSeconds * 1000).toISOString().substr(11, 8)
+  return <div className="text-base sm:text-lg ">{time}</div>;
 };
 
 export default Timer;

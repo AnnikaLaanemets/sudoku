@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import ChooseDifficulty from './components/ChooseDifficulty.tsx';
-import StartModal from './components/StartModal.tsx';
+import PauseModal from './components/PauseModal.tsx';
 import { generatePuzzle } from './utils/sudokuUtils.ts';
 import { CellComponent } from './components/Cell.tsx';
 import NumberButtons from './components/NumberButtons.tsx';
@@ -9,6 +9,7 @@ import Button from './components/Button';
 import Navbar from './components/Navbar';
 import {Difficulty} from './Types.ts';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { useTimer } from './utils/useTimer.ts';
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState({ x: 0, y: 0 });
@@ -17,10 +18,9 @@ const App: React.FC = () => {
   const [board, setBoard] = useState(() => generatePuzzle({difficulty}));
   const [counts, setCounts] = useState(0);
   const [isChooseDifficultyOpen, setIsChooseDifficultyOpen] = useState(true);
-  const [isStartModalOpen, setIsStartModalOpen] = useState(false);
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const isSolved = board.every((cell) => cell.isRevealed || cell.inputValue === cell.number);
   const selectedCell = board.find((cell) => cell.x === selected.x && cell.y === selected.y);
+  const {reset} = useTimer("main");
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -92,7 +92,8 @@ const App: React.FC = () => {
 
 const handleNewGame = (difficulty: Difficulty) => {
   setIsChooseDifficultyOpen(true);
-  setIsTimerRunning(true)
+  reset()
+  setCounts(0);
   const newPuzzle = generatePuzzle({difficulty});
   setBoard(newPuzzle);
 };
@@ -117,13 +118,11 @@ const handleFocus = (x:number,y:number) => {
           setIsChooseDifficultyOpen={setIsChooseDifficultyOpen}
         />
       )}
-  {isStartModalOpen && !isTimerRunning && (
-    <StartModal
-        setIsStartModalOpen={setIsStartModalOpen}
-    />
-)}
-      <div className='container w-xs sm:w-xl m-auto rounded-lg border-3 bg-sky-200/80'>
-        <Navbar difficulty={difficulty} hints={counts} isTimerRunning={isTimerRunning} setIsTimerRunning={setIsTimerRunning} difficultyChange={isChooseDifficultyOpen} isStartModalOpen={isStartModalOpen} setIsStartModalOpen={setIsStartModalOpen}/>
+ 
+    <PauseModal/>
+
+      <div className='container w-xs sm:w-xl m-auto rounded-lg border-3 bg-sky-200/80 pb-3'>
+        <Navbar difficulty={difficulty} hints={counts}/>
         <div className='grid grid-cols-1 sm:grid-cols-2 rounded'>
         <div className='rounded'>
         <DndContext onDragEnd={handleDragEnd}>
@@ -153,7 +152,7 @@ const handleFocus = (x:number,y:number) => {
               </div>
             </DndContext>
 </div>
-        <div className='rounded flex flex-col m-auto mt-8 ms-15'>
+        <div className=' rounded flex flex-col m-auto ms-18'>
           <Button onClick={handleCheckNumber} variant='helpButton' >
             Check Number
           </Button>
