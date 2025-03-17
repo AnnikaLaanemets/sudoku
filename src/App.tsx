@@ -11,6 +11,7 @@ import {Difficulty} from './Types.ts';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { useTimer } from './utils/useTimer.ts';
 
+
 const App: React.FC = () => {
   const [selected, setSelected] = useState({ x: 0, y: 0 });
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
@@ -125,7 +126,7 @@ const handleFocus = (x:number,y:number) => {
         <Navbar difficulty={difficulty} hints={counts}/>
         <div className='grid grid-cols-1 sm:grid-cols-2 rounded'>
         <div className='rounded'>
-        <DndContext onDragEnd={handleDragEnd}>
+        <DndContext  onDragEnd={handleDragEnd}>
               <div className='grid grid-cols-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)] grid-rows-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)'>
               {board.map(cell =>
               {
