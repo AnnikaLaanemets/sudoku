@@ -12,7 +12,7 @@ type ButtonProps = {
 }
 
 const Button: React.FC<ButtonProps> = ({
-  variant = 'small',     
+  variant = 'helpButton',     
   className = '',
   onClick,            
   children          

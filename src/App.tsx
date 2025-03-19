@@ -19,7 +19,7 @@ const App: React.FC = () => {
   const [board, setBoard] = useState(() => generatePuzzle({difficulty}));
   const [counts, setCounts] = useState(0);
   const [isChooseDifficultyOpen, setIsChooseDifficultyOpen] = useState(true);
-  const isSolved = board.every((cell) => cell.isRevealed || cell.inputValue === cell.number);
+  const [validateSolution, setValidateSolution] = useState(false)
   const selectedCell = board.find((cell) => cell.x === selected.x && cell.y === selected.y);
   const {reset} = useTimer("main");
 
@@ -77,12 +77,14 @@ const App: React.FC = () => {
   };
 
   const handleValidate = () => {
+    setValidateSolution(true);
     const isCorrect = board.every((cell) => cell.isRevealed || cell.number === cell.inputValue);
     alert(isCorrect ? "Congratulations! You solved the sudoku! 🥳🥳🥳" : "Some numbers are incorrect 😞");
+
   };
 
   const handleShowSolution = () => {
-    const solved =board.map(item => {
+    const solved = board.map(item => {
       return {
         ...item,
         isRevealed:true
@@ -119,9 +121,8 @@ const handleFocus = (x:number,y:number) => {
           setIsChooseDifficultyOpen={setIsChooseDifficultyOpen}
         />
       )}
- 
-    <PauseModal/>
 
+    <PauseModal/>
       <div className='container w-xs sm:w-xl m-auto rounded-lg border-3 bg-sky-200/80 pb-3'>
         <Navbar difficulty={difficulty} hints={counts}/>
         <div className='grid grid-cols-1 sm:grid-cols-2 rounded'>
@@ -142,6 +143,7 @@ const handleFocus = (x:number,y:number) => {
                 key={`${cell.x}+${cell.y}`} 
                 cellData={cell} 
                 selectedButton={selectedButton} 
+                validateSolution={validateSolution}
                 />
               }
 
@@ -160,10 +162,10 @@ const handleFocus = (x:number,y:number) => {
           <Button onClick={handleShowHint} variant='helpButton'>
             Show Hint
           </Button>
-          <Button onClick={handleValidate} disabled={isSolved} variant='helpButton'>
+          <Button onClick={handleValidate}  variant='helpButton'>
             Validate Solution
           </Button>
-          <Button onClick={handleShowSolution} disabled={isSolved} variant='regularButton'>
+          <Button onClick={handleShowSolution}  variant='regularButton'>
             Show Solution
           </Button>
           <Button  onClick={() => handleNewGame(difficulty)}  variant='regularButton'>

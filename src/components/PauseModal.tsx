@@ -6,7 +6,6 @@ import React from 'react';
 
 const PauseModal:React.FC = () => {
 const {isActive, resume} = useTimer();
-console.log({isActive})
       if (isActive) {
         return null
       }

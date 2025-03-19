@@ -19,7 +19,7 @@ const Navbar: React.FC<Props>= ({difficulty, hints}) => {
         <h1 className='btn btn-ghost sm:text-xl p-1'>SUDOKU</h1>
       </div>
       <h3 className="mx-1 capitalize text-xs sm:text-base sm:font-bold">{difficulty}</h3>
-      <div className="text-xs sm:text-base  text-center mx-1 sm:mx-3">Hints: {hints}</div>
+      <div className="text-xs sm:text-base text-center mx-1 sm:mx-3">Hints: {hints}</div>
       <div className='flex-none p-0 mx-2'>
         <button className='btn btn-circle btn-ghost' onClick={toggle}>
           <div>{isActive ? <img alt='Pause button' src={pause} /> : <img alt='Start button' src={play} />}</div>
