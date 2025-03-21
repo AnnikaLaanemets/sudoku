@@ -14,7 +14,6 @@ import { useTimer } from './utils/useTimer.ts';
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState({ x: 0, y: 0 });
-  const [selectedButton, setSelectedButton] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [board, setBoard] = useState(() => generatePuzzle({difficulty}));
   const [counts, setCounts] = useState(0);
@@ -55,7 +54,6 @@ const App: React.FC = () => {
     }
     
   };
-
 
   const handleShowHint = () => {
     setCounts(counts + 1)
@@ -105,7 +103,13 @@ const handleCellChange = (value:number,x:number,y:number) => {
   const index = board.findIndex(item => item.x===x && item.y === y)
   board[index].inputValue = value
   setBoard([...board])
-  setSelected({x,y})
+}
+
+const handleCurrentCellChange = (value:number) => {
+  if(!selectedCell){
+    return
+  }
+  handleCellChange(value,selectedCell.x,selectedCell.y)  
 }
 
 const handleFocus = (x:number,y:number) => {
@@ -121,7 +125,6 @@ const handleFocus = (x:number,y:number) => {
           setIsChooseDifficultyOpen={setIsChooseDifficultyOpen}
         />
       )}
-
     <PauseModal/>
       <div className='container w-xs sm:w-xl m-auto rounded-lg border-3 bg-sky-200/80 pb-3'>
         <Navbar difficulty={difficulty} hints={counts}/>
@@ -130,8 +133,7 @@ const handleFocus = (x:number,y:number) => {
         <DndContext  onDragEnd={handleDragEnd}>
               <div className='grid grid-cols-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)] grid-rows-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)'>
               {board.map(cell =>
-              {
-                const isHighlighted = selected.x === cell.x ||
+              {const isHighlighted = selected.x === cell.x ||
                 selected.y === cell.y || 
                 (cell.zoneX === Math.ceil(selected.x/3) && cell.zoneY === Math.ceil(selected.y/3))
                 const isSelected = selected.x === cell.x && selected.y === cell.y
@@ -142,20 +144,17 @@ const handleFocus = (x:number,y:number) => {
                 isSelected={isSelected} 
                 key={`${cell.x}+${cell.y}`} 
                 cellData={cell} 
-                selectedButton={selectedButton} 
                 validateSolution={validateSolution}
                 />
               }
-
-
           )}
               </div>
-              <div className='buttonContainer mt-3'>
-                <NumberButtons setSelectedButton={setSelectedButton} />
+              <div className='mt-3'>
+                <NumberButtons handleCurrentCellChange={handleCurrentCellChange} />
               </div>
             </DndContext>
 </div>
-        <div className=' rounded flex flex-col m-auto ms-18'>
+        <div className='rounded flex flex-col m-auto ms-18'>
           <Button onClick={handleCheckNumber} variant='helpButton' >
             Check Number
           </Button>

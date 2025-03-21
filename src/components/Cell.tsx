@@ -9,31 +9,23 @@ type Props = {
   validateSolution: boolean;
   handler?: (value: number, x: number, y: number) => void;
   handleFocus?: (x: number, y: number) => void;
-  selectedButton?: number | null;
 };
 
-const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSelected, selectedButton, isHighlighted, validateSolution}) =>  {
- const displayValue = cellData.isRevealed ? cellData.number : " ";
+const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSelected, isHighlighted, validateSolution}) =>  {
+  const displayValue = cellData.isRevealed ? cellData.number : " ";
   const { setNodeRef } = useDroppable({
     id: `cell-${cellData.x}-${cellData.y}`,
     data: { cell: cellData },
   });
-
   const correctInput = cellData.isRevealed || cellData.number  === cellData.inputValue;
 
   const onChange:React.ChangeEventHandler<HTMLInputElement> = (event) => {
     handler?.(Number((event.target.value)),cellData.x,cellData.y)
   } 
-  const handleClick: React.MouseEventHandler<HTMLInputElement> = () => {
-    handler?.(Number(selectedButton), cellData.x, cellData.y);
-  };
-
-  
 
   return (
     <div
       ref={setNodeRef} 
-      onClick={handleClick}
       className={`w-8.75 h-9 badge badge-soft ${
         (isSelected || cellData.inputValue ) ? 'badge-primary' : (isHighlighted ? 'badge-warning': 'badge-neutral')
       } ${ (validateSolution && !correctInput ) ? 'badge-secondary' : ""} text-2xl rounded-xs !gap-0 !border-violet-950 ${
@@ -44,7 +36,7 @@ const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSele
         <input
           onChange={onChange}
           onFocus={() => handleFocus?.(cellData.x, cellData.y)}
-          className="w-8 h-8 text-cente"
+          className="w-8 h-8 text-center"
           defaultValue={cellData.inputValue || ""}
           maxLength={1}
         />

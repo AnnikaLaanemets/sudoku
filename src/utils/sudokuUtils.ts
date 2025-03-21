@@ -46,7 +46,7 @@ const backtrack = (board: Board): boolean => {
 };
 
 const removeCells = (puzzleBoard: Board, difficulty: Difficulty) => {
-  const difficultyMap = { easy: 30, moderate: 40, intermediate: 50, difficult: 60 };
+  const difficultyMap = { easy: 25, moderate: 35, intermediate: 45, difficult: 55 };
   let removeCount = difficultyMap[difficulty];
 
   while (removeCount > 0) {
@@ -59,7 +59,6 @@ const removeCells = (puzzleBoard: Board, difficulty: Difficulty) => {
     }
   }
 };
-
 
 const generatePuzzle = ({difficulty}: {difficulty: Difficulty}) => {
     const newBoard = generateEmptyBoard();
