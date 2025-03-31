@@ -14,7 +14,7 @@ const Navbar: React.FC<Props>= ({difficulty, hints}) => {
     toggle } = useTimer();
 
   return (
-    <div className='navbar bg-blue-200 shadow-sm rounded-sm'>
+    <div className='navbar bg-blue-300 text-violet-900 shadow-sm rounded-sm'>
       <div className='flex-1'>
         <h1 className='btn btn-ghost sm:text-xl p-1'>SUDOKU</h1>
       </div>

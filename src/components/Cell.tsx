@@ -1,6 +1,7 @@
 import { Cell } from '../Types';
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
+import clsx from 'clsx';
 
 type Props = {
   cellData: Cell;
@@ -26,11 +27,16 @@ const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSele
   return (
     <div
       ref={setNodeRef} 
-      className={`w-8.75 h-9 badge badge-soft ${
-        (isSelected || cellData.inputValue ) ? 'badge-primary' : (isHighlighted ? 'badge-warning': 'badge-neutral')
-      } ${ (validateSolution && !correctInput ) ? 'badge-secondary' : ""} text-2xl rounded-xs !gap-0 !border-violet-950 ${
-        cellData.x % 3 === 0 ? 'border-b-4 border-violet-800' : ""
-      } ${cellData.y % 3 === 0 ? 'border-r-4 border-violet-800' : ""} `}
+      className={clsx(
+        "w-9 h-9 border text-center text-2xl rounded-xs !gap-0 border-violet-950 bg-white",
+        {
+          "text-yellow-700": isHighlighted && !cellData.inputValue,
+          "text-blue-600": isSelected || cellData.inputValue,
+          "bg-yellow-200": isHighlighted,
+          "text-black": !isHighlighted && !cellData.inputValue,
+          "text-pink-400": validateSolution && !correctInput,
+        }
+      )}
   
     >{!cellData.isRevealed ? (
         <input

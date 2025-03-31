@@ -17,7 +17,7 @@ const App: React.FC = () => {
   } = useSudokuApp();
 
   return (
-    <div className='App'>
+    <div className='App pt-5'>
       
   {isChooseDifficultyOpen && (
         <ChooseDifficulty
@@ -27,12 +27,15 @@ const App: React.FC = () => {
         />
       )}
     <PauseModal/>
-      <div className='container w-xs sm:w-xl m-auto rounded-lg border-3 bg-sky-200/80 pb-3'>
+      <div className='container max-w-150 border-violet-900 m-auto rounded-lg border-3 bg-sky-200/80 pb-3p'>
         <Navbar difficulty={difficulty} hints={counts}/>
-        <div className='grid grid-cols-1 sm:grid-cols-2 rounded'>
-        <div className='rounded'>
+        <div id='game-content' className='flex flex-col content-evenly gap-3 items-center sm:justify-evenly sm:flex-row pt-4 pb-4'>
+        <div className='w-90 flex flex-col items-center'>
         <DndContext  onDragEnd={handleDragEnd}>
-              <div className='grid grid-cols-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)] grid-rows-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)'>
+              <div className='grid 
+              w-83 h-83
+              grid-cols-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)] 
+              grid-rows-[repeat(2,auto)_1fr_repeat(2,auto)_1fr_repeat(3,auto)]'>
               {board.map(cell =>
               {const isHighlighted = selected.x === cell.x ||
                 selected.y === cell.y || 
@@ -50,12 +53,12 @@ const App: React.FC = () => {
               }
           )}
               </div>
-              <div className='mt-3'>
+              <div className='mt-3 w-70'>
                 <NumberButtons />
               </div>
             </DndContext>
 </div>
-        <div className='rounded flex flex-col m-auto ms-18'>
+        <div id='buttons' className='w-45 flex flex-col items-center gap-2'>
           <Button onClick={handleCheckNumber} variant='helpButton' >
             Check Number
           </Button>
@@ -73,8 +76,8 @@ const App: React.FC = () => {
           </Button>
         </div>
         </div>
+        </div>
       </div>
-    </div>
   );
 };
 

@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
     <>
     <button
      className={clsx(
-            'transition-all duration-400 ease-in-out text-white border p-2 text-base rounded-xl w-32 sm:w-40 m-3', 
+            'transition-all duration-400 ease-in-out text-white border p-2 text-base rounded-xl w-32 sm:w-40', 
             variant === 'regularButton' && ' bg-purple-800 hover:bg-violet-400 border-purple-900 block',
             variant === 'helpButton'  &&  ' bg-yellow-400 hover:bg-amber-200 border-yellow-600',
             className
