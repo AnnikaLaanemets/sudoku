@@ -67,4 +67,5 @@ const generatePuzzle = ({difficulty}: {difficulty: Difficulty}) => {
     return newBoard.flat();
   
 };
-export {generatePuzzle}
+
+export {generatePuzzle, isValid, shuffleArray, backtrack, removeCells, generateEmptyBoard};

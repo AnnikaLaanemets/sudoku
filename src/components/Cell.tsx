@@ -39,6 +39,7 @@ const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSele
           className="w-8 h-8 text-center"
           defaultValue={cellData.inputValue || ""}
           maxLength={1}
+          title="Enter a single number (1-9) or click the number button below to choose the likely value for the selected cell."  
         />
       ) : (
         displayValue
