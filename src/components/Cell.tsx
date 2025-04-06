@@ -32,7 +32,8 @@ const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSele
         {
           "text-yellow-700": isHighlighted && !cellData.inputValue,
           "text-blue-600": isSelected || cellData.inputValue,
-          "bg-yellow-200": isHighlighted,
+          "bg-yellow-100": isHighlighted,
+          "bg-yellow-300": isSelected,
           "text-black": !isHighlighted && !cellData.inputValue,
           "text-pink-400": validateSolution && !correctInput,
         }
@@ -41,7 +42,7 @@ const CellComponent: React.FC<Props> = ({ cellData, handler, handleFocus, isSele
     >{!cellData.isRevealed ? (
         <input
           onChange={onChange}
-          onFocus={() => handleFocus?.(cellData.x, cellData.y)}
+          onFocus={(e) => {handleFocus?.(cellData.x, cellData.y); e.target.blur(); }}
           className="w-8 h-8 text-center"
           defaultValue={cellData.inputValue || ""}
           maxLength={1}

@@ -27,9 +27,9 @@ const App: React.FC = () => {
         />
       )}
     <PauseModal/>
-      <div className='container max-w-150 border-violet-900 m-auto rounded-lg border-3 bg-sky-200/80 pb-3p'>
+      <div className='container max-w-132 border-violet-900 m-auto rounded-lg border-3 bg-sky-200/80 pb-4p'>
         <Navbar difficulty={difficulty} hints={counts}/>
-        <div id='game-content' className='flex flex-col content-evenly gap-3 items-center sm:justify-evenly sm:flex-row pt-4 pb-4'>
+        <div id='game-content' className='flex flex-col content-evenly gap-1 items-center sm:justify-evenly sm:flex-row  pt-2 pb-4'>
         <div className='w-90 flex flex-col items-center'>
         <DndContext  onDragEnd={handleDragEnd}>
               <div className='grid 
@@ -58,7 +58,7 @@ const App: React.FC = () => {
               </div>
             </DndContext>
 </div>
-        <div id='buttons' className='w-45 flex flex-col items-center gap-2'>
+        <div id='buttons' className='w-45 flex flex-col items-center p-2 gap-4'>
           <Button onClick={handleCheckNumber} variant='helpButton' >
             Check Number
           </Button>

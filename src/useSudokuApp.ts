@@ -94,6 +94,7 @@ const useSudokuApp = () => {
 
 const handleNewGame = (difficulty: Difficulty) => {
   setIsChooseDifficultyOpen(true);
+  setValidateSolution(false);
   reset()
   setCounts(0);
   const newPuzzle = generatePuzzle({difficulty});
@@ -116,8 +117,6 @@ const handleCurrentCellChange = (value:number) => {
 const handleFocus = (x:number,y:number) => {
     setSelected({x,y})
 }
-
-
     return {isChooseDifficultyOpen, setDifficulty, handleNewGame, setIsChooseDifficultyOpen, selected,
       difficulty, counts, handleDragEnd, board, handleCellChange, handleFocus, validateSolution, handleCheckNumber,handleShowHint,handleValidate,handleShowSolution
     }
